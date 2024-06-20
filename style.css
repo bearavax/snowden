@@ -1,51 +1,43 @@
-/* Reset default styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Set a base font size and family */
+/* snowfall */
 body {
-    font-size: 16px;
-    font-family: Arial, sans-serif;
+	padding: 0;
+	margin: 0;
+	height: 100vh;
 }
 
-/* Set a container for your content */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+canvas {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #f3f3f3;
+    background-image: linear-gradient(to top, rgba(83, 144, 231, 0.7) 0%, rgba(105, 176, 227, 0.5) 30%, rgba(255, 255, 255, 0) 70%);
 }
 
-/* Add some basic styles to your headings */
-h1, h2, h3 {
-    margin-bottom: 10px;
+/* basic css */
+h1 {
+    color: #333;
+    font-size: 24px;
+    text-align: center;
 }
 
-/* Style your paragraphs */
 p {
-    margin-bottom: 20px;
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
-/* Add some basic styles to your links */
 a {
-    color: #000;
+    color: #007bff;
     text-decoration: none;
 }
 
-/* Style your buttons */
-.button {
+button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #000;
+    background-color: #007bff;
     color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-/* Add some basic styles to your images */
-img {
-    max-width: 100%;
-    height: auto;
+    border-radius: 4px;
+    text-decoration: none;
 }
