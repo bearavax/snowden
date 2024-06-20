@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="styles.css" />
+    </head>
+    <body>
+        <button id="connect-button">Connect Metamask</button>
+        <script>
+            document.getElementById('connect-button').addEventListener('click', event => {
+                let account;
+                ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
+                    account = accounts[0];
+                    console.log(account);
+                })
+            });
+        </script>
+    </body>
+</html>
