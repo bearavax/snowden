@@ -5,41 +5,56 @@
         <meta charset="UTF-8" />
     </head>
     <body>
-        <header></header>
-        <h1>Hello</h1>
-        <button id="connect-button" class="button">Connect Metamask</button>
-        <script>
-            document.getElementById('connect-button').addEventListener('click', event => {
-                let account;
-                let button = event.target;
-                ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
-                    account = accounts[0];
-                    console.log(account);
-                    button.textContent = account;
-
-                    ethereum.request({method: 'eth_getBalance', params: [account, 'latest']}).then(result => {
-                        console.log(result);
-                        let wei = parseInt(result,16);
-                        let balance = wei / (10**18);
-                        console.log(balance + "ETH");
-                    });
-                })
-            });
-        </script>
         <canvas id="canvas"></canvas>
         <script src="snowfall.js"></script>
         <div class="header">
-            <h2>Header</h2>
-          </div>
-          
-          <div class="row">
-            <div class="column" style="background-color:#aaa;">Column</div>
-            <div class="column" style="background-color:#bbb;">Column</div>
-            <div class="column" style="background-color:#ccc;">Column</div>
-          </div>
-          
-          <div class="footer">
-            <p>Footer</p>
-          </div>
+            <div class="title-container">
+                <img src="https://cdn-icons-png.freepik.com/512/2484/2484178.png" alt="">
+                <h1>Snowden</h1>
+              </div>
+              <!-- Other header content -->
+              <button id="connect-button" class="button">Connect Wallet</button>
+              <script>
+                  document.getElementById('connect-button').addEventListener('click', event => {
+                      let account;
+                      let button = event.target;
+                      ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
+                          account = accounts[0];
+                          console.log(account);
+                          button.textContent = account;
+  
+                          ethereum.request({method: 'eth_getBalance', params: [account, 'latest']}).then(result => {
+                              console.log(result);
+                              let wei = parseInt(result,16);
+                              let balance = wei / (10**18);
+                              console.log(balance + "ETH");
+                          });
+                      });
+                    });
+                </script>
+        </div>
+        <div class="header">
+            <div id="container">
+                <div class="row">
+                    <div class="name">Player1</div><div class="score">430</div>
+                </div>
+                
+                <div class="row">
+                    <div class="name">Player2</div><div class="score">580</div>
+                </div>
+                
+                <div class="row">
+                    <div class="name">Player3</div><div class="score">310</div>
+                </div>
+                
+                <div class="row">
+                    <div class="name">Player4</div><div class="score">640</div>
+                </div>
+                
+                <div class="row">
+                    <div class="name">Player5</div><div class="score">495</div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
