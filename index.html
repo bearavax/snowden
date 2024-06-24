@@ -15,23 +15,35 @@
               <!-- Other header content -->
               <button id="connect-button" class="button">Connect Wallet</button>
               <script>
-                  document.getElementById('connect-button').addEventListener('click', event => {
-                      let account;
-                      let button = event.target;
-                      ethereum.request({ method: 'eth_requestAccounts' }).then(accounts => {
-                          account = accounts[0];
-                          console.log(account);
-                          button.textContent = account;
-  
-                          ethereum.request({method: 'eth_getBalance', params: [account, 'latest']}).then(result => {
-                              console.log(result);
-                              let wei = parseInt(result,16);
-                              let balance = wei / (10**18);
-                              console.log(balance + "ETH");
-                          });
+                document.getElementById('connect-button').addEventListener('click', async () => {
+                  try {
+                    // Check if Ethereum object is available in window
+                    if (window.ethereum) {
+                      // Request account access
+                      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                      const account = accounts[0];
+                      console.log(account); // Log the connected account
+              
+                      // Update button text with account address
+                      document.getElementById('connect-button').textContent = account;
+              
+                      // Request account balance
+                      const result = await window.ethereum.request({
+                        method: 'eth_getBalance',
+                        params: [account, 'latest']
                       });
-                    });
-                </script>
+              
+                      const wei = parseInt(result, 16);
+                      const balance = wei / (10 ** 18);
+                      console.log(`${balance} ETH`); // Log the balance in ETH
+                    } else {
+                      console.log('Ethereum wallet is not available');
+                    }
+                  } catch (error) {
+                    console.error('An error occurred:', error);
+                  }
+                });
+              </script>
         </div>
         <div class="header">
             <div id="container">
