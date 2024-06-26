@@ -129,5 +129,4 @@ img {
   background-size: cover; /* Cover the entire area of the div */
   background-position: center; /* Center the background image */
   margin-right: 10px; /* Adds some space between the avatar and the next element */
-  z-index: 1;
 }
