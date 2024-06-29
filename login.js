@@ -1,50 +1,41 @@
-// Example user object, possibly retrieved from a login system or API
-const user = {
-    login: "username",
-    profilePictureUrl: "https://example.com/path/to/profile-picture.jpg"
-  };
-  
-  // Function to update the avatar background image based on user details
-  function updateUserAvatar(user) {
-    const avatarElement = document.querySelector('.avatar');
-    if (avatarElement) {
-      avatarElement.style.backgroundImage = `url('${user.profilePictureUrl}')`;
-      avatarElement.style.backgroundSize = 'cover'; // Ensure the image covers the whole element
-      avatarElement.style.backgroundPosition = 'center'; // Center the background image
+// Function to connect the wallet
+async function connectWallet() {
+  if (window.ethereum) {
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (accounts.length > 0) {
+        console.log('Wallet connected:', accounts[0]);
+        // Enable profile picture change functionality
+        enableProfileChange();
+      }
+    } catch (error) {
+      console.error('Error connecting to wallet:', error);
     }
+  } else {
+    console.log('Ethereum object not found. Install MetaMask.');
   }
-  
-  //refresh the avatar
-  // Call the function with the user object
-  document.addEventListener('DOMContentLoaded', function() {
-      updateUserAvatar(user);
-  
-      document.addEventListener('DOMContentLoaded', function() {
-        const rows = document.querySelectorAll('.row');
-  
-        rows.forEach(row => {
-          const playerName = row.querySelector('.name').textContent;
-          const avatarElement = row.querySelector('.avatar');
-          const profilePictureUrl = getPlayerProfilePictureUrl(playerName); // Implement this function based on your application's logic
-  
-          if (avatarElement && profilePictureUrl) {
-            avatarElement.style.backgroundImage = `url('${profilePictureUrl}')`;
-            avatarElement.style.backgroundSize = 'cover';
-            avatarElement.style.backgroundPosition = 'center';
-            // Ensure .avatar has dimensions in CSS or set them here
-          }
-        });
-      });
-  });
+}
 
-  // Example function to get profile picture URL (replace with your actual logic)
-  function getPlayerProfilePictureUrl(playerName) {
-    // Placeholder: Return a URL based on the player's name
-    const profilePictures = {
-      'Player1': 'https://example.com/path/to/player1.jpg',
-      'Player2': 'https://example.com/path/to/player2.jpg',
-      // Add mappings for each player
+// Function to enable profile picture change
+function enableProfileChange() {
+  const avatarElement = document.querySelector('.avatar');
+  avatarElement.addEventListener('click', () => {
+    // Trigger file input to select a new profile picture
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.onchange = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        // Update avatar's src with the selected image
+        avatarElement.src = reader.result;
+      };
+      reader.readAsDataURL(file);
     };
-    return profilePictures[playerName];
-  }
-</script>
+    fileInput.click();
+  });
+}
+
+// Example usage: Attach connectWallet to a button click event
+document.getElementById('connect-wallet-button').addEventListener('click', connectWallet);
