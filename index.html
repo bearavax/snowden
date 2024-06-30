@@ -9,56 +9,13 @@
     <script src="snowfall.js"></script>
     <div class="header">
       <div class="title-container">
-        <img src="https://cdn-icons-png.freepik.com/512/2484/2484178.png" alt="">
-        <h1>Snowden</h1>
+      <img src="https://cdn-icons-png.freepik.com/512/2484/2484178.png" alt="">
+      <h1>Snowden</h1>
       </div>
       <!-- Other header content -->
       <button id="connect-button" class="button">Connect Wallet</button>
-      <script>
-        let isWalletConnected = false; // Track wallet connection status
-      
-        document.getElementById('connect-button').addEventListener('click', async () => {
-          if (!isWalletConnected) {
-            try {
-              // Check if Ethereum object is available in window
-              if (window.ethereum) {
-                // Request account access
-                const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-                const account = accounts[0];
-                console.log(account); // Log the connected account
-      
-                // Update button text with account address
-                document.getElementById('connect-button').textContent = `Connected: ${account.substring(0, 6)}...${account.slice(-4)}`;
-      
-                isWalletConnected = true; // Update connection status
-      
-                // Optionally, you can change the button text to indicate the new functionality
-                document.getElementById('connect-button').textContent = 'Change Profile Picture';
-              } else {
-                console.log('Ethereum wallet is not available');
-              }
-            } catch (error) {
-              console.error('An error occurred:', error);
-            }
-          } else {
-            // Functionality to change the profile picture
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.accept = 'image/*';
-            fileInput.onchange = (e) => {
-              const file = e.target.files[0];
-              const reader = new FileReader();
-              reader.onloadend = () => {
-                // Assuming you have an img element with class 'avatar'
-                const avatarElement = document.querySelector('.avatar');
-                avatarElement.src = reader.result;
-              };
-              reader.readAsDataURL(file);
-            };
-            fileInput.click();
-          }
-        });
-      </script>
+    </div>
+    <script src="login.js"></script>
     </div>
     <div class="header">
       <div id="container">
@@ -86,5 +43,17 @@
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <div id="walletModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Change Profile Picture</p>
+        <input type="file" id="profilePictureInput" accept="image/*">
+        <p>Change Username</p>
+        <input type="text" id="usernameInput">
+        <button id="disconnectWallet">Disconnect Wallet</button>
+      </div>
+    </div>
+</div>
   </body>
 </html>

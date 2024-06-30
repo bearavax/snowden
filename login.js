@@ -1,41 +1,44 @@
 // Function to connect the wallet
-async function connectWallet() {
-  if (window.ethereum) {
+let isWalletConnected = false; // Track wallet connection status
+
+document.getElementById('connect-button').addEventListener('click', async () => {
+  if (!isWalletConnected) {
     try {
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      if (accounts.length > 0) {
-        console.log('Wallet connected:', accounts[0]);
-        // Enable profile picture change functionality
-        enableProfileChange();
+      // Check if Ethereum object is available in window
+      if (window.ethereum) {
+        // Request account access
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const account = accounts[0];
+        console.log(account); // Log the connected account
+
+        // Update button text with account address
+        document.getElementById('connect-button').textContent = `${account.substring(0, 6)}...${account.slice(-4)}`;
+
+        isWalletConnected = true; // Update connection status
+
+      } else {
+        console.log('Ethereum wallet is not available');
       }
     } catch (error) {
-      console.error('Error connecting to wallet:', error);
+      console.error('An error occurred:', error);
     }
   } else {
-    console.log('Ethereum object not found. Install MetaMask.');
+    // Toggle modal visibility
+    const modal = document.getElementById('walletModal');
+    modal.style.display = "block";
+
+    // Close modal when the user clicks on <span> (x)
+    document.querySelector('.close').onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // Close modal if the user clicks anywhere outside of the modal
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    // Add event listeners for modal functionality (e.g., changing profile picture, disconnecting wallet) here
   }
-}
-
-// Function to enable profile picture change
-function enableProfileChange() {
-  const avatarElement = document.querySelector('.avatar');
-  avatarElement.addEventListener('click', () => {
-    // Trigger file input to select a new profile picture
-    const fileInput = document.createElement('input');
-    fileInput.type = 'file';
-    fileInput.accept = 'image/*';
-    fileInput.onchange = (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        // Update avatar's src with the selected image
-        avatarElement.src = reader.result;
-      };
-      reader.readAsDataURL(file);
-    };
-    fileInput.click();
-  });
-}
-
-// Example usage: Attach connectWallet to a button click event
-document.getElementById('connect-wallet-button').addEventListener('click', connectWallet);
+});
