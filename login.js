@@ -71,22 +71,136 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
   const saveChangesButton = document.getElementById('saveChanges');
   const disconnectWalletButton = document.getElementById('disconnectWallet');
+  const walletModal = document.getElementById('walletModal');
+  const connectWalletButton = document.getElementById('connectWalletButton');
 
-  if (saveChangesButton) {
-    saveChangesButton.addEventListener('click', function() {
-      console.log('Save Changes button clicked');
-      // Implement save changes logic here
-    });
-  } else {
-    console.log('Save Changes button not found');
-  }
+  // Debugging: Check if elements are found
+  console.log('Modal:', walletModal);
+  console.log('Connect Wallet Button:', connectWalletButton);
 
-  if (disconnectWalletButton) {
-    disconnectWalletButton.addEventListener('click', function() {
-      console.log('Disconnect Wallet button clicked');
-      // Implement disconnect wallet logic here
-    });
-  } else {
-    console.log('Disconnect Wallet button not found');
-  }
+  saveChangesButton?.addEventListener('click', () => {
+    console.log('Save Changes button clicked');
+    // Implement save changes logic here
+  });
+
+  disconnectWalletButton?.addEventListener('click', () => {
+    console.log('Disconnect Wallet button clicked');
+    // Disconnect the wallet
+    disconnectWallet(); // Hypothetical function to disconnect the wallet
+    // Close the modal window
+    if (walletModal) {
+      walletModal.style.display = 'none';
+      console.log('Modal should be closed now');
+    } else {
+      console.log('Failed to find modal');
+    }
+    // Reset the connect wallet button text
+    if (connectWalletButton) {
+      connectWalletButton.textContent = 'Connect Wallet';
+      console.log('Connect Wallet button text reset');
+    } else {
+      console.log('Failed to find Connect Wallet button');
+    }
+  });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  const saveChangesButton = document.getElementById('saveChanges');
+  const disconnectWalletButton = document.getElementById('disconnectWallet');
+  const walletModal = document.getElementById('walletModal');
+  const connectWalletButton = document.getElementById('connectWalletButton');
+
+  // Debugging: Check if elements are found
+  console.log('Modal:', walletModal);
+  console.log('Connect Wallet Button:', connectWalletButton);
+
+  saveChangesButton?.addEventListener('click', () => {
+    console.log('Save Changes button clicked');
+    // Implement save changes logic here
+  });
+
+  disconnectWalletButton?.addEventListener('click', () => {
+    console.log('Disconnect Wallet button clicked');
+    // Disconnect the wallet
+    disconnectWallet(); // Hypothetical function to disconnect the wallet
+    // Close the modal window
+    if (walletModal) {
+      walletModal.style.display = 'none';
+      console.log('Modal should be closed now');
+    } else {
+      console.log('Failed to find modal');
+    }
+    // Reset the connect wallet button text
+    if (connectWalletButton) {
+      connectWalletButton.textContent = 'Connect Wallet';
+      console.log('Connect Wallet button text reset');
+    } else {
+      console.log('Failed to find Connect Wallet button');
+    }
+  });
+});
+
+function disconnectWallet() {
+  console.log('Disconnecting the wallet...');
+
+  // Example: Clear wallet connection details from local storage
+  localStorage.removeItem('walletConnected');
+  localStorage.removeItem('walletAddress');
+
+  // If your wallet integration involves a backend or needs to notify the wallet provider
+  // you might need to make an API call here to properly disconnect.
+  // Example API call (hypothetical):
+  // fetch('/api/disconnectWallet', { method: 'POST' })
+  //   .then(response => response.json())
+  //   .then(data => console.log('Wallet disconnected:', data))
+  //   .catch(error => console.error('Error disconnecting wallet:', error));
+
+  console.log('Wallet disconnected successfully.');
+}
+
+// Add this function to login.js
+async function updateLeaderboardScore(walletAddress) {
+  console.log('Updating leaderboard score for wallet:', walletAddress);
+
+  try {
+    // Fetch the transaction history for the wallet
+    // This URL is hypothetical and will depend on the API you're using
+    const response = await fetch(`https://api.blockchain.com/v3/eth/transactions?address=${walletAddress}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch transaction history');
+    }
+    const transactions = await response.json();
+
+    // Find the first transaction date
+    const firstTransaction = transactions.reduce((earliest, current) => {
+      const currentTimestamp = new Date(current.timeStamp * 1000); // Assuming the timestamp is in seconds
+      return currentTimestamp < earliest ? currentTimestamp : earliest;
+    }, new Date());
+
+    console.log('First transaction date:', firstTransaction);
+
+    // Here, convert the firstTransaction date to a score
+    // This is a placeholder for whatever logic you use to convert dates to leaderboard scores
+    const score = convertDateToScore(firstTransaction);
+
+    // Update the leaderboard with the new score
+    // This is a placeholder - replace it with your actual logic to update the leaderboard
+    updateLeaderboard(walletAddress, score);
+  } catch (error) {
+    console.error('Error updating leaderboard score:', error);
+  }
+}
+
+// Placeholder function to convert a date to a leaderboard score
+// Replace this with your actual conversion logic
+function convertDateToScore(date) {
+  // Example conversion logic
+  return date.getTime(); // This is just an example and likely not what you want
+}
+
+// Placeholder function to update the leaderboard
+// Replace this with your actual logic to update the leaderboard
+function updateLeaderboard(walletAddress, score) {
+  console.log(`Updating leaderboard for ${walletAddress} with score ${score}`);
+  // Actual logic to update the leaderboard goes here
+}
