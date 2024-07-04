@@ -154,6 +154,7 @@ function disconnectWallet() {
   //   .then(response => response.json())
   //   .then(data => console.log('Wallet disconnected:', data))
   //   .catch(error => console.error('Error disconnecting wallet:', error));
+  // pp
 
   console.log('Wallet disconnected successfully.');
 }
