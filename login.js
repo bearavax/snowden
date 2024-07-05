@@ -199,6 +199,7 @@ function convertDateToScore(date) {
   return date.getTime(); // This is just an example and likely not what you want
 }
 
+//tired lazy
 // Placeholder function to update the leaderboard
 // Replace this with your actual logic to update the leaderboard
 function updateLeaderboard(walletAddress, score) {
