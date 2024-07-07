@@ -64,10 +64,10 @@ button {
   flex-direction: column; /* Corrected from justify-content: column; */
   align-items: center;
   gap: 5px; /* Reduced gap */
-  background-color: #ededed;
+  background-color: #ffffff;
   padding: 10px 20px; /* Adjusted padding */
   font-size: 20px; /* Adjusted font size */
-  border: 2px solid #1c7de4;
+  border: 2px solid #efefef;
   margin: 10px 0; /* Adjusted margin */
   border-radius: 30px;
 }

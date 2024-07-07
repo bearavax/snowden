@@ -1,3 +1,19 @@
+// Example function to handle form submission
+function handleFormSubmit(event) {
+  event.preventDefault();
+  const name = document.getElementById('name-input').value;
+  const file = document.getElementById('profile-picture-input').files[0];
+
+  const reader = new FileReader();
+  reader.onloadend = function() {
+    const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+    localStorage.setItem('walletName', name);
+    localStorage.setItem('profilePicture', base64String);
+    // Close modal and update UI as needed
+  };
+  reader.readAsDataURL(file);
+}
+
 // Function to connect the wallet
 let isWalletConnected = false; // Track wallet connection status
 
@@ -43,7 +59,55 @@ document.getElementById('connect-button').addEventListener('click', async () => 
   }
 });
 
-document.addEventListener('DOMContentLoaded', function() {
+async function fetchEarliestTransaction(walletAddress) {
+  const transactions = await fetch(`https://eth-mainnet.g.alchemy.com/v2/4-sKos14eZmCGhSgZpRBWE52dyrEpnru/${walletAddress}/transactions`).then(res => res.json());
+  // Assuming the API returns transactions sorted by date
+  const earliestTransaction = transactions[0]; // Simplified; in reality, you'd need to sort or find the earliest
+  return earliestTransaction;
+}
+
+async function storeWalletInfo(walletAddress) {
+  const earliestTransaction = await fetchEarliestTransaction(walletAddress);
+  const name = localStorage.getItem('walletName');
+  const profilePicture = localStorage.getItem('profilePicture');
+
+  // Example of what you might store
+  const walletInfo = {
+    name,
+    profilePicture,
+    earliestTransactionDate: earliestTransaction.date, // Assuming the transaction object has a date
+    // Include other transaction details as needed
+  };
+
+  // Assuming you have a function to update or store this info in your leaderboard
+  updateLeaderboard(walletAddress, walletInfo);
+}
+
+function updateLeaderboard(walletAddress, walletInfo) {
+  // This is highly dependent on your application's architecture
+  // For a frontend example:
+  const leaderboardEntry = document.createElement('div');
+  leaderboardEntry.innerHTML = `
+    <img src="data:image/png;base64,${walletInfo.profilePicture}" alt="Profile Picture">
+    <p>Name: ${walletInfo.name}</p>
+    <p>Earliest Transaction Date: ${walletInfo.earliestTransactionDate}</p>
+  `;
+  document.getElementById('leaderboard').appendChild(leaderboardEntry);
+
+  // For a backend example, you might POST this data to your server
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const storedName = localStorage.getItem('walletName');
+  const storedPicture = localStorage.getItem('profilePicture');
+
+  if (storedName && storedPicture) {
+    // Update UI with stored name and profile picture
+    // For the profile picture, you'll need to convert the Base64 string back to an image
+    document.getElementById('wallet-name-display').textContent = storedName;
+    document.getElementById('profile-picture-display').src = `data:image/png;base64,${storedPicture}`;
+  }
+
   // Variables to store the profile picture and username
   let profilePicture = 'default_avatar.jpg';
   let username = '';
@@ -67,6 +131,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // and/or send these values to a server for persistence.
   });
 });
+
+// Example function to handle form submission
+function handleFormSubmit(event) {
+  event.preventDefault();
+  const name = document.getElementById('name-input').value;
+  const file = document.getElementById('profile-picture-input').files[0];
+
+  const reader = new FileReader();
+  reader.onloadend = function() {
+    const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+    localStorage.setItem('walletName', name);
+    localStorage.setItem('profilePicture', base64String);
+    // Close modal and update UI as needed
+  };
+  reader.readAsDataURL(file);
+}
 
 document.addEventListener('DOMContentLoaded', function() {
   const saveChangesButton = document.getElementById('saveChanges');
