@@ -14,6 +14,7 @@ function handleFormSubmit(event) {
   reader.readAsDataURL(file);
 }
 
+//hi
 // Function to connect the wallet
 let isWalletConnected = false; // Track wallet connection status
 
