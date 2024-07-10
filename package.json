@@ -8,5 +8,10 @@
   },
   "author": "bear",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@rainbow-me/rainbowkit": "^2.1.3",
+    "@tanstack/react-query": "^5.50.1",
+    "wagmi": "^2.10.10"
+  }
 }
